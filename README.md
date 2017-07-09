@@ -1,4 +1,4 @@
-# Elemental canvas engine
+# Elemental Engine
 
 Basic setup is as follows
 
