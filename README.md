@@ -9,8 +9,6 @@ Basic setup is as follows
 
 Check `demo.html` for a full demo.
 
-[I'm an inline-style link with title](https://www.google.com)
-
 * [Elemental](https://github.com/wg4568/Elemental-Engine#elemental-engine)
   * [Canvas](https://github.com/wg4568/Elemental-Engine#elementalcanvas)
     * [keyDown](https://github.com/wg4568/Elemental-Engine#elementalcanvaskeydown)
