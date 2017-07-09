@@ -209,7 +209,7 @@ Elemental.Canvas = class {
 			this.context.fillStyle = element.fillColor;
 
 			this.context.translate(x, y);
-			this.context.rotate(Elemental.Helpers.toRadians(element.rotation+sprite.rotation));
+			this.context.rotate(Elemental.Helpers.ToRadians(element.rotation+sprite.rotation));
 
 			this.context.beginPath();
 
@@ -233,8 +233,8 @@ Elemental.Canvas = class {
 					(element.arc.center.x-element.center.x)*scaleFactor,
 					(element.arc.center.y-element.center.y)*scaleFactor,
 					(element.arc.radius)*scaleFactor,
-					Elemental.Helpers.toRadians(element.arc.start),
-					Elemental.Helpers.toRadians(element.arc.end)
+					Elemental.Helpers.ToRadians(element.arc.start),
+					Elemental.Helpers.ToRadians(element.arc.end)
 				);
 			}
 
@@ -250,7 +250,7 @@ Elemental.Canvas = class {
 				if (element.lineWidth > 0) { this.context.stroke(); }
 			}
 
-			this.context.rotate(-Elemental.Helpers.toRadians(element.rotation+sprite.rotation));
+			this.context.rotate(-Elemental.Helpers.ToRadians(element.rotation+sprite.rotation));
 			this.context.translate(-x, -y);
 		};
 	}
@@ -259,20 +259,20 @@ Elemental.Canvas = class {
 // Helper object filled with helper functions and classes
 Elemental.Helpers = {}
 
-Elemental.Helpers.toRadians = function(degrees) {
+Elemental.Helpers.ToRadians = function(degrees) {
 	return degrees * Math.PI / 180;
 }
 
-Elemental.Helpers.toDegrees = function(radians) {
+Elemental.Helpers.ToDegrees = function(radians) {
 	return radians * 180 / Math.PI;
 }
 
-Elemental.Helpers.angleBetween = function(point1, point2) {
+Elemental.Helpers.AngleBetween = function(point1, point2) {
 	var rads = Math.atan2(point1.x-point2.x, point1.y-point2.y);
-	return -Elemental.Helpers.toDegrees(rads)+90;
+	return -Elemental.Helpers.ToDegrees(rads)+90;
 }
 
-Elemental.Helpers.stepBetween = function(point1, point2) {
+Elemental.Helpers.StepBetween = function(point1, point2) {
 	var hype = Math.sqrt(Math.pow(point1.x-point2.x, 2) + Math.pow(point1.y-point2.y, 2));
 	var dx = -(point1.x-point2.x)/hype;
 	var dy = -(point1.y-point2.y)/hype;

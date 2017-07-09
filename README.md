@@ -39,10 +39,10 @@ Check `demo.html` for a full demo.
 	* [Multiply](https://github.com/wg4568/Elemental-Engine#elementalvectormultiply)
 	* [Divide](https://github.com/wg4568/Elemental-Engine#elementalvectordivide)
   * [Helpers](https://github.com/wg4568/Elemental-Engine#elementalhelpers)
-    * [toRadians](https://github.com/wg4568/Elemental-Engine#elementalhelperstoradians)
-	* [toDegrees](https://github.com/wg4568/Elemental-Engine#elementalhelperstodegrees)
-	* [angleBetween](https://github.com/wg4568/Elemental-Engine#elementalhelpersanglebetween)
-	* [stepBetween](https://github.com/wg4568/Elemental-Engine#elementalhelpersstepbetween)
+    * [ToRadians](https://github.com/wg4568/Elemental-Engine#elementalhelperstoradians)
+	* [ToDegrees](https://github.com/wg4568/Elemental-Engine#elementalhelperstodegrees)
+	* [AngleBetween](https://github.com/wg4568/Elemental-Engine#elementalhelpersanglebetween)
+	* [StepBetween](https://github.com/wg4568/Elemental-Engine#elementalhelpersstepbetween)
 
 ### Elemental.Canvas
 
@@ -329,25 +329,25 @@ Divides each vector by the next. Can pass a numeric value also.
 
 An object used to store a series of helper functions that can be used by the user.
 
-### Elemental.Helpers.toRadians
+### Elemental.Helpers.ToRadians
 
 `(degrees) -> Static Function -> Num`
 
 Converts degrees to radians
 
-### Elemental.Helpers.toDegrees
+### Elemental.Helpers.ToDegrees
 
 `(radians) -> Static Function -> Num`
 
 Converts radians to degrees
 
-### Elemental.Helpers.angleBetween
+### Elemental.Helpers.AngleBetween
 
 `(point1, point2) -> Static Function -> Num`
 
 Finds angle between two vectors. Angle follows the same conventions as canvas arcs, and works in all 4 quadrants.
 
-### Elemental.Helpers.stepBetween
+### Elemental.Helpers.StepBetween
 
 `(point1, point2) -> Static Function -> Vector`
 
