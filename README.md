@@ -125,7 +125,16 @@ Properties
 
 ### Elemental.Shape
 
-A shape is a class representing a set of lines and their properties. The basic types are Polygons, Lines, and Arcs. A shape can make up only one simple geometry. The following properties are shared by all Shape instances.
+A shape is a class representing a set of lines and their properties. The basic types are Polygons (including lines) and Arcs. A shape can make up only one simple geometry. The following properties are shared by all Shape instances.
+
+You can also pass a `data` keyword argument to any shape. The shape will inherit any properties contained in the passed object. This means you can configure your shape when it is initiated.
+
+```javascript
+var myShape = new Elemental.Shape.Line(data={
+    lineWidth: 10,
+    lineColor: "red"
+});
+```
 
 Properties
 * `layer (get, set) -> Int`
@@ -157,6 +166,91 @@ Properties
 * `type (get, set) -> String`
   * Used by drawSprite to determine sprite type
 
+### Elemental.Shape.Polygon
+
+`(points) {data} -> Class -> Shape.Polygon instance`
+
+Creates closed polygon between the passed array of vectors.
+
+```javascript
+var myPoly = new Elemental.Shape.Polygon([
+    new Vector(0, 0),
+    new Vector(10, 0),
+    new Vector(10, 10),
+    new Vector(0, 10),
+]);
+```
+
+### Elemental.Shape.Line
+
+`(points) {data} -> Class -> Shape.Line instance`
+
+Creates a line between passed array of vectors.
+
+```javascript
+var myLine = new Elemental.Shape.Polygon([
+    new Vector(0, 0),
+    new Vector(10, 10),
+    new Vector(20, 10)
+]);
+```
+
+### Elemental.Shape.Arc
+
+`(radius) {start, end, data} -> Class -> Shape.Arc instance`
+
+Creates an arc given the radius, and the start and end of the segment (in degrees). To create a full circle, start at 0 and end at 360. These are also the defaults for the keyword arguments.
+
+```javascript
+var myArc = new Elemental.Shape.Arc(50, start=0, end=180);
+```
+
+The above code makes a closed semi-circle, with a radius of 50px.
+
 ### Elemental.Vector
 
-### Elemental.Helpers
+A vector is a representation of a point in the Elemental engine. They have two properties, an X and a Y. Anywhere where Elemental asks for a point, it is looking for a vector.
+
+A vector can be any property with an `x` and `y` attribute. You can define an acceptable vector any of the following ways...
+
+```javascript
+var myVector = new Elemental.Vector(0, 0);
+var myVector = {x: 0, y: 0};
+var myVector = Elemental.Vector.Blank;
+```
+
+### Elemental.Vector.Empty
+
+`() -> Static Get -> Vector instance of value (0, 0)`
+
+Gives new vector instance, with an x and y of 0.
+
+### Elemental.Vector.IsVector
+
+`(vector) -> Static Function -> Bool`
+
+Returns whether passed vector is a valid vector.
+
+### Elemental.Vector.Add
+
+`(vectors...) -> Static Function -> Vector`
+
+Returns sum of all vectors. Can pass a numeric value also.
+
+### Elemental.Vector.Subtract
+
+`(vectors...) -> Static Function -> Vector`
+
+Subtracts each vector from the next. Can pass a numeric value also.
+
+### Elemental.Vector.Multiply
+
+`(vectors...) -> Static Function -> Vector`
+
+Returns product of all vectors. Can pass a numeric value also.
+
+### Elemental.Vector.Divide
+
+`(vectors...) -> Static Function -> Vector`
+
+Divides each vector by the next. Can pass a numeric value also.
