@@ -9,6 +9,20 @@ Basic setup is as follows
 
 Check `demo.html` for a full demo.
 
+[I'm an inline-style link with title](https://www.google.com)
+
+* [`Elemental`](https://github.com/wg4568/Elemental-Engine#elemental-engine)
+  * [`Canvas`](https://github.com/wg4568/Elemental-Engine#elementalcanvas)
+  * [`Keycodes`](https://github.com/wg4568/Elemental-Engine#elementalkeycodes)
+  * [`Mousecodes`](https://github.com/wg4568/Elemental-Engine#elementalmousecodes)
+  * [`Sprite`](https://github.com/wg4568/Elemental-Engine#elementalsprite)
+  * [`Shape`](https://github.com/wg4568/Elemental-Engine#elementalshape)
+    * [`Polygon`](https://github.com/wg4568/Elemental-Engine#elementalshapepolygon)
+	* [`Line`](https://github.com/wg4568/Elemental-Engine#elementalshapeline)
+	* [`Arc`](https://github.com/wg4568/Elemental-Engine#elementalshapearc)
+  * [`Vector`](https://github.com/wg4568/Elemental-Engine#elementalvector)
+  * [`Helpers`](https://github.com/wg4568/Elemental-Engine#elementalhelpers)
+
 ### Elemental.Canvas
 
 `(element ID) -> Class -> Canvas instance`
