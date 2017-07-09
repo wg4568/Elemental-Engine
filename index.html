@@ -1,0 +1,38 @@
+<script src="lib/engine.js"></script>
+
+<canvas id="game" width="500" height="500"></canvas>
+
+<script>
+	var canvas = new Elemental.Canvas("game");
+
+	var tank = new Elemental.Sprite({
+		body: new Elemental.Shape.Arc(50, data={
+			lineWidth: 10,
+			layer: 1,
+			fillColor: "#df3cbb"
+		}),
+		barrel: new Elemental.Shape.Polygon([
+			new Elemental.Vector(0, 0),
+			new Elemental.Vector(0, 30),
+			new Elemental.Vector(80, 30),
+			new Elemental.Vector(80, 0)
+		], data={
+			center: new Elemental.Vector(0, 15),
+			lineWidth: 10
+		})
+	});
+
+	var tankPos = new Elemental.Vector(150, 150);
+	var speed = 5;
+
+	canvas.start(function(){
+
+		if (canvas.keyHeld(Elemental.Keycodes.UP)) tankPos.y -= speed;
+		if (canvas.keyHeld(Elemental.Keycodes.DOWN)) tankPos.y += speed;
+		if (canvas.keyHeld(Elemental.Keycodes.LEFT)) tankPos.x -= speed;
+		if (canvas.keyHeld(Elemental.Keycodes.RIGHT)) tankPos.x += speed;
+
+		canvas.drawFill("#83d7ff");
+		canvas.drawSprite(tank, tankPos);
+	});
+</script>
