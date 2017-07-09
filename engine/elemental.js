@@ -123,9 +123,11 @@ Elemental.Canvas = class {
 		document.addEventListener("keydown", function(event) {
 			parent.keyDownEvent(event.keyCode);
 		});
+
 		document.addEventListener("keyup", function(event) {
 			parent.keyUpEvent(event.keyCode);
 		});
+
 		this.canvas.addEventListener("mousemove", function(event) {
 			parent.mouseMoveEvent(event);
 		}, false);
@@ -133,6 +135,7 @@ Elemental.Canvas = class {
 		document.addEventListener("mousedown", function(event) {
 			parent.mouseDownEvent(event.button);
 		});
+
 		document.addEventListener("mouseup", function(event) {
 			parent.mouseUpEvent(event.button);
 		});
@@ -176,6 +179,10 @@ Elemental.Canvas = class {
 	drawRect(color, posn, w, h) {
 		this.context.fillStyle = color;
 		this.context.fillRect(posn.x, posn.y, w, h);
+	}
+
+	drawImage(image, posn) {
+		this.context.drawImage(image, posn.x, posn.y);
 	}
 
 	drawSprite(sprite, posn) {
@@ -277,6 +284,23 @@ Elemental.Helpers.StepBetween = function(point1, point2) {
 	var dx = -(point1.x-point2.x)/hype;
 	var dy = -(point1.y-point2.y)/hype;
 	return new Elemental.Vector(dx, dy);
+}
+
+Elemental.Helpers.RandomInt = function(min, max) {
+	return Math.floor(Math.random() * (max - min) + min);
+}
+
+Elemental.Helpers.RandomColor = function(r={min: 0, max: 255}, g={min: 0, max: 255}, b={min: 0, max: 255}) {
+	var r = Elemental.Helpers.RandomInt(r.min, r.max);
+	var g = Elemental.Helpers.RandomInt(g.min, g.max);
+	var b = Elemental.Helpers.RandomInt(b.min, b.max);
+	return `rgb(${r}, ${g}, ${b})`;
+}
+
+Elemental.Helpers.LoadImage = function(url) {
+	var img = new Image();
+    img.src = url;
+	return img;
 }
 
 // GameLoopManager By Javier Arevalo

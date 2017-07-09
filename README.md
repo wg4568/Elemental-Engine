@@ -3,7 +3,7 @@
 Basic setup is as follows
 
 ```html
-<script src="elemental.js"></script>
+<script src="engine/elemental.js"></script>
 <canvas id="myCanvas" width="500" height="500"></canvas>
 ```
 

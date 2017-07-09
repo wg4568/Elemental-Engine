@@ -1,0 +1,102 @@
+<title>Senti Demo</title>
+
+<script src="engine/elemental.js"></script>
+<script src="engine/sentinel.js"></script>
+<script src="engine/pako.js"></script>
+
+<script src="level.js"></script>
+
+<canvas id="canvas" width="1000" height="700"></canvas>
+
+<p>WASD to move tank</p>
+<p>ARROWS to move camera</p>
+
+<script>
+
+// Define a 200x200 grid of random colors
+var grid = [];
+for (var y = -100; y < 100; y++) {
+	var line = [];
+	for (var x = -100; x < 100; x++) {
+		line.push(Elemental.Helpers.RandomColor());
+	}
+	grid.push(line);
+}
+
+// Define a sprite for the tank, with a body and barrel
+var tankSprite = new Elemental.Sprite({
+	body: new Elemental.Shape.Arc(50, data={
+		lineWidth: 10,
+		layer: 1,
+		fillColor: "#df3cbb"
+	}),
+	barrel: new Elemental.Shape.Polygon([
+		new Elemental.Vector(0, 0),
+		new Elemental.Vector(0, 50),
+		new Elemental.Vector(80, 50),
+		new Elemental.Vector(80, 0)
+	], data={
+		center: new Elemental.Vector(0, 25),
+		lineWidth: 10
+	})
+});
+
+// Define a canvas object from the HTML canvas above
+var canvas = new Elemental.Canvas("canvas");
+
+// Define a tiled viewport, with a function to draw tiles at given points
+var viewport = new Sentinel.Viewport.Tiled(canvas, function(gridPos, drawPos){
+	// Get color from grid, given gridPos
+	var color = grid[gridPos.x+100][gridPos.y+100];
+
+	// Draw rectangle of that color, at drawPos
+	viewport.drawRect(color, drawPos, 32, 32);
+}, tileSize=64);
+
+// Define variables for tank position, camera speed, and tank speed
+var tankPos = Elemental.Vector.Empty;
+var camSpeed = 5;
+var tankSpeed = 5;
+
+// Begin the canvas clock with passed function
+canvas.start(function(){
+	// Calculate angle between tank position (on the canvas), and the mouse position
+	mouseAngle = Elemental.Helpers.AngleBetween(canvas.mousePos, viewport.translatePoint(tankPos));
+
+	// Set tank sprite rotation to previously calculated angle
+	tankSprite.rotation = mouseAngle;
+
+	// Check for WASD keyboard input and apply movement to tank position
+	if (canvas.keyHeld(Elemental.Keycodes.W)) tankPos.y -= tankSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.S)) tankPos.y += tankSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.A)) tankPos.x -= tankSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.D)) tankPos.x += tankSpeed;
+
+	// Check for ARROWS keyboard input and apply movement to camera position
+	if (canvas.keyHeld(Elemental.Keycodes.UP)) viewport.y -= camSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.DOWN)) viewport.y += camSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.LEFT)) viewport.x -= camSpeed;
+	if (canvas.keyHeld(Elemental.Keycodes.RIGHT)) viewport.x += camSpeed;
+
+	// Fill solid background
+	viewport.drawFill("#b3faff");
+
+	// Draw all required tiles to fill canvas
+	viewport.drawTiles();
+
+	// Draw tank sprite at tank position
+	viewport.drawSprite(tankSprite, tankPos);
+
+	// Draw some debug text, and a crosshair
+	canvas.drawText("20px Arial", `${viewport.x}, ${viewport.y}`, {x:10,y:25});
+	canvas.drawLine(
+		{x: canvas.width/2, y: (canvas.height/2)-5},
+		{x: canvas.width/2, y: (canvas.height/2)+5}
+	)
+	canvas.drawLine(
+		{x: (canvas.width/2)-5, y: canvas.height/2},
+		{x: (canvas.width/2)+5, y: canvas.height/2}
+	)
+});
+
+</script>
