@@ -6,11 +6,15 @@ Elemental.Canvas = class {
 	constructor(id) {
 		this._canvas = document.getElementById(id);
 		this._context = this._canvas.getContext("2d");
-		this.mousePos = Elemental.Vector.Empty;
+		this._mousePos = Elemental.Vector.Empty;
 
 		this.keyState = {};
 		this.keyStateDown = {};
 		this.keyStateUp = {};
+
+		this.mouseState = {};
+		this.mouseStateDown = {};
+		this.mouseStateUp = {};
 	}
 
 	// Getters and setters
@@ -38,6 +42,10 @@ Elemental.Canvas = class {
 		this.canvas.height = value;
 	}
 
+	get mousePos() {
+		return this._mousePos;
+	}
+
 	get size() {
 		return {x: this.height, y: this.width};
 	}
@@ -55,6 +63,20 @@ Elemental.Canvas = class {
 	keyUpEvent(keycode) {
 		this.keyState[keycode] = 0;
 		this.keyStateUp[keycode] = 1;
+	}
+
+	mouseDownEvent(btn) {
+		this.mouseState[btn] = 1;
+		this.mouseStateDown[btn] = 1;
+	}
+
+	mouseUpEvent(btn) {
+		this.mouseState[btn] = 0;
+		this.mouseStateUp[btn] = 1;
+	}
+
+	mouseMoveEvent(event) {
+		this._mousePos = new Elemental.Vector(event.offsetX, event.offsetY);
 	}
 
 	// State reading methods
@@ -76,6 +98,24 @@ Elemental.Canvas = class {
 		else return false;
 	}
 
+	mouseDown(btn) {
+		var state = this.mouseStateDown[btn];
+		if (state == 1) return true;
+		else return false;
+	}
+
+	mouseUp(btn) {
+		var state = this.mouseStateUp[btn];
+		if (state == 1) return true;
+		else return false;
+	}
+
+	mouseHeld(btn) {
+		var state = this.mouseState[btn];
+		if (state == 1) return true;
+		else return false;
+	}
+
 	// Initiation function
 	start(func) {
 		var parent = this;
@@ -86,11 +126,24 @@ Elemental.Canvas = class {
 		document.addEventListener("keyup", function(event) {
 			parent.keyUpEvent(event.keyCode);
 		});
+		this.canvas.addEventListener("mousemove", function(event) {
+			parent.mouseMoveEvent(event);
+		}, false);
+
+		document.addEventListener("mousedown", function(event) {
+			parent.mouseDownEvent(event.button);
+		});
+		document.addEventListener("mouseup", function(event) {
+			parent.mouseUpEvent(event.button);
+		});
+
 
 		Elemental.Helpers.GameLoopManager.run(function(time) {
 			func(parent, time);
 			parent.keyStateDown = {};
 			parent.keyStateUp = {};
+			parent.mouseStateDown = {};
+			parent.mouseStateUp = {};
 		});
 	}
 
@@ -208,6 +261,22 @@ Elemental.Helpers = {}
 
 Elemental.Helpers.toRadians = function(degrees) {
 	return degrees * Math.PI / 180;
+}
+
+Elemental.Helpers.toDegrees = function(radians) {
+	return radians * 180 / Math.PI;
+}
+
+Elemental.Helpers.angleBetween = function(point1, point2) {
+	var rads = Math.atan2(point1.x-point2.x, point1.y-point2.y);
+	return -Elemental.Helpers.toDegrees(rads)+90;
+}
+
+Elemental.Helpers.stepBetween = function(point1, point2) {
+	var hype = Math.sqrt(Math.pow(point1.x-point2.x, 2) + Math.pow(point1.y-point2.y, 2));
+	var dx = -(point1.x-point2.x)/hype;
+	var dy = -(point1.y-point2.y)/hype;
+	return new Elemental.Vector(dx, dy);
 }
 
 // GameLoopManager By Javier Arevalo
@@ -520,4 +589,10 @@ Elemental.Keycodes = {
 	BSLASH: 220,
 	CBRAKET: 221,
 	QUOTE: 222
+}
+
+Elemental.Mousecodes = {
+	LEFT: 0,
+	MIDDLE: 1,
+	RIGHT: 2
 }

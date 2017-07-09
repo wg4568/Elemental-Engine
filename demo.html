@@ -1,0 +1,94 @@
+<script src="elemental.js"></script>
+
+<canvas id="game" width="1000" height="700"></canvas>
+
+<script>
+	// Create canvas from HTML element above
+	var canvas = new Elemental.Canvas("game");
+
+	// Define a tank sprite, with a body and a barrel
+	var tankSprite = new Elemental.Sprite({
+		body: new Elemental.Shape.Arc(50, data={
+			lineWidth: 10,
+			layer: 1,
+			fillColor: "#df3cbb"
+		}),
+		barrel: new Elemental.Shape.Polygon([
+			new Elemental.Vector(0, 0),
+			new Elemental.Vector(0, 30),
+			new Elemental.Vector(80, 30),
+			new Elemental.Vector(80, 0)
+		], data={
+			center: new Elemental.Vector(0, 15),
+			lineWidth: 10
+		})
+	});
+
+	// Define a bullet sprite
+	var bulletSprite = new Elemental.Sprite({
+		body: new Elemental.Shape.Arc(10, data={
+			lineWidth: 10,
+			fillColor: "#ff0000",
+			center: new Elemental.Vector(5, 5)
+		})
+	});
+
+	// Define a bullet class, for managing bullets
+	class Bullet {
+		constructor(start, velocity) {
+			this.position = start;
+			this.velocity = velocity;
+		}
+
+		frame() {
+			this.position = Elemental.Vector.Add(this.position, this.velocity);
+			canvas.drawSprite(bulletSprite, this.position);
+		}
+	}
+
+	// Create array to manage bullets, and a bullet speed variable
+	var bullets = [];
+	var bulletSpeed = 15;
+
+	// Create a vector for the tank position and a speed variable
+	var tankPos = new Elemental.Vector(150, 150);
+	var tankSpeed = 5;
+
+	// Begin calling this function ~60 times a second
+	canvas.start(function(){
+		// Fill the canvas blue
+		canvas.drawFill("#83d7ff");
+
+		// Iterate over bullets, and call their frame function
+		bullets.forEach(function(bullet){
+			bullet.frame();
+		});
+
+		// Calculate angle between mouse position and the tank
+		mouseAngle = Elemental.Helpers.angleBetween(canvas.mousePos, tankPos);
+
+		// Set tank rotation to point towards the mouse
+		tankSprite.rotation = mouseAngle;
+
+		// Check if mouse has been clicked this frame, and if so, shoot
+		if (canvas.mouseDown(Elemental.Mousecodes.LEFT)) {
+			// Find velocity of bullet, using stepBetween
+			var velocity = Elemental.Helpers.stepBetween(tankPos, canvas.mousePos);
+
+			// Multiply velocity by bulletSpeed
+			velocity = Elemental.Vector.Multiply(velocity, bulletSpeed);
+
+			// Append a new bullet to the bullet array with calculated velocity
+			bullets.push(new Bullet(tankPos, velocity));
+		}
+
+		// Check for keypresses and move appropriately
+		if (canvas.keyHeld(Elemental.Keycodes.W)) tankPos.y -= tankSpeed;
+		if (canvas.keyHeld(Elemental.Keycodes.S)) tankPos.y += tankSpeed;
+		if (canvas.keyHeld(Elemental.Keycodes.A)) tankPos.x -= tankSpeed;
+		if (canvas.keyHeld(Elemental.Keycodes.D)) tankPos.x += tankSpeed;
+
+		// Draw the tank sprite at tankPos
+		canvas.drawSprite(tankSprite, tankPos);
+	});
+</script>

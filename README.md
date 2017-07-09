@@ -7,6 +7,8 @@ Basic setup is as follows
 <canvas id="myCanvas" width="500" height="500"></canvas>
 ```
 
+Check `demo.html` for a full demo.
+
 ### Elemental.Canvas
 
 `(element ID) -> Class -> Canvas instance`
@@ -18,10 +20,11 @@ var canvas = new Elemental.Canvas("myCanvas");
 ```
 
 Properties
-* `width (set, get) -> Int`
-* `height (set, get) -> Int`
+* `width (set, get) -> Num`
+* `height (set, get) -> Num`
 * `size (get) -> Vector`
 * `center (get) -> Vector`
+* `mousePos (get) -> Vector`
 
 ### Elemental.Canvas.keyDown
 
@@ -40,6 +43,24 @@ Returns if keycode was released this frame
 `(keycode) -> Function -> Bool`
 
 Returns if keycode is currently being held down
+
+### Elemental.Canvas.mouseDown
+
+`(button) -> Function -> Bool`
+
+Returns if mouse button was pushed this frame
+
+### Elemental.Canvas.mouseUp
+
+`(button) -> Function -> Bool`
+
+Returns if mouse button was released this frame
+
+### Elemental.Canvas.mouseHeld
+
+`(button) -> Function -> Bool`
+
+Returns if mouse button is currently held down
 
 ### Elemental.Canvas.drawFill
 
@@ -93,11 +114,25 @@ The reverse of Elemental.Canvas.start
 
 ### Elemental.Keycodes
 
-Keycodes contain bindings between key names, and their representative integers.
+Contain bindings between key names, and their representative integers.
 
 ```javascript
 function frame(context, time) {
     if (context.keyHeld(Elemental.Keycodes.SPACE)) {
+        context.drawFill("black");
+    } else {
+        context.drawFill("white");
+    }
+}
+```
+
+### Elemental.Mousecodes
+
+Contains bindings between mouse button names, and their representative integers.
+
+```javascript
+function frame(context, time) {
+    if (context.mouseHeld(Elemental.Mousecodes.LEFT)) {
         context.drawFill("black");
     } else {
         context.drawFill("white");
@@ -120,8 +155,8 @@ canvas.drawSprite(mySprite, posn);
 ```
 
 Properties
-* `rotation (get, set) -> Int`
-* `scale (get, set) -> Int`
+* `rotation (get, set) -> Num`
+* `scale (get, set) -> Num`
 
 ### Elemental.Shape
 
@@ -137,26 +172,26 @@ var myShape = new Elemental.Shape.Line(data={
 ```
 
 Properties
-* `layer (get, set) -> Int`
+* `layer (get, set) -> Num`
   * Determines ordering of shapes. A shape with a layer of 1 would be drawn above a shape with a layer of 0.
-* `scale (get, set) -> Int`
+* `scale (get, set) -> Num`
   * Shape dimension multiplier. 1 is normal size.
 * `center (get, set) -> Vector`
   * Where (0, 0) is on the sprite. Will be aligned exactly at the point where you drew the sprite. Also acts as the center when rotating.
-* `rotation (get, set) -> Int`
+* `rotation (get, set) -> Num`
   * Angle of rotation (in degrees). 0 is normal.
-* `lineWidth (get, set) -> Int`
+* `lineWidth (get, set) -> Num`
   * Set to 0 for no line to show.
 * `lineColor (get, set) -> String`
 * `lineCaps (get, set) -> String`
   * How the line is ended. Can be "round", "butt", or "square"
 * `lineCorners (get, set) -> String`
   * How the corners of the line are drawn. Can be "round", "bevel", or "miter".
-* `lineMiterLimit (get, set) -> Int`
+* `lineMiterLimit (get, set) -> Num`
   * Miter limit, if lineCorners are set to "miter".
-* `lineDashWidth (get, set) -> Int`
+* `lineDashWidth (get, set) -> Num`
   * Set this, and lineDashSpacing to null for no dashes. Otherwise self explanitory.
-* `lineDashSpacing (get, set) -> Int`
+* `lineDashSpacing (get, set) -> Num`
 * `fillColor (get, set) -> String`
   * Set to null for no fill.
 * `closePath (get, set) -> Bool`
@@ -254,3 +289,31 @@ Returns product of all vectors. Can pass a numeric value also.
 `(vectors...) -> Static Function -> Vector`
 
 Divides each vector by the next. Can pass a numeric value also.
+
+### Elemental.Helpers
+
+An object used to store a series of helper functions that can be used by the user.
+
+### Elemental.Helpers.toRadians
+
+`(degrees) -> Static Function -> Num`
+
+Converts degrees to radians
+
+### Elemental.Helpers.toDegrees
+
+`(radians) -> Static Function -> Num`
+
+Converts radians to degrees
+
+### Elemental.Helpers.angleBetween
+
+`(point1, point2) -> Static Function -> Num`
+
+Finds angle between two vectors. Angle follows the same conventions as canvas arcs, and works in all 4 quadrants.
+
+### Elemental.Helpers.stepBetween
+
+`(point1, point2) -> Static Function -> Vector`
+
+Returns a vector with a normalized "step" to move from point1 to point2.
